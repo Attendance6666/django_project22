@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Attendance Tracker{% endblock %}
+
+{% block content %}
+<div class="header-section">
+    <h2>📊 Attendance Dashboard</h2>
+    <p>Total Students: <strong>{{ total_students }}</strong></p>
+</div>
+
+<div class="groups-section">
+    <h3>Groups Overview</h3>
+    {% if groups %}
+        <div class="cards-grid">
+            {% for group in groups %}
+            <div class="card">
+                <h4>{{ group.name }}</h4>
+                <p class="description">{{ group.description|default:"No description" }}</p>
+                <p class="student-count">👥 Students: {{ group.students.count }}</p>
+                <a href="{% url 'group_detail' group.id %}" class="btn">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-data">No groups found. Add groups in the admin panel.</p>
+    {% endif %}
+</div>
+
+<div class="recent-section">
+    <h3>Recent Attendance Records</h3>
+    {% if recent_attendance %}
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in recent_attendance %}
+                <tr>
+                    <td>{{ record.student }}</td>
+                    <td>{{ record.date }}</td>
+                    <td>
+                        <span class="status-badge status-{{ record.status }}">
+                            {{ record.get_status_display }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="no-data">No attendance records yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

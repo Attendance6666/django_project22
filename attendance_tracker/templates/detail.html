@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ group.name }} - Details{% endblock %}
+
+{% block content %}
+<div class="detail-header">
+    <a href="{% url 'home' %}" class="back-btn">← Back to Home</a>
+    <h2>{{ group.name }}</h2>
+    <p class="description">{{ group.description|default:"No description available" }}</p>
+</div>
+
+<div class="students-section">
+    <h3>Students in {{ group.name }}</h3>
+    
+    {% if students %}
+        <div class="students-grid">
+            {% for student in students %}
+            <div class="student-card">
+                <div class="student-info">
+                    <h4>{{ student.first_name }} {{ student.last_name }}</h4>
+                    <p class="student-id">ID: {{ student.student_id }}</p>
+                </div>
+                
+                <div class="attendance-summary">
+                    <h5>Recent Attendance:</h5>
+                    {% if student.attendance_set.all %}
+                        <ul class="attendance-list">
+                            {% for record in student.attendance_set.all|slice:":5" %}
+                            <li>
+                                <span class="date">{{ record.date }}</span>
+                                <span class="status-badge status-{{ record.status }}">
+                                    {{ record.get_status_display }}
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="no-data">No attendance records</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-data">No students in this group.</p>
+    {% endif %}
+</div>
+{% endblock %}
