@@ -25,34 +25,4 @@
         <p class="no-data">No groups found. Add groups in the admin panel.</p>
     {% endif %}
 </div>
-
-<div class="recent-section">
-    <h3>Recent Attendance Records</h3>
-    {% if recent_attendance %}
-        <table class="attendance-table">
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in recent_attendance %}
-                <tr>
-                    <td>{{ record.student }}</td>
-                    <td>{{ record.date }}</td>
-                    <td>
-                        <span class="status-badge status-{{ record.status }}">
-                            {{ record.get_status_display }}
-                        </span>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p class="no-data">No attendance records yet.</p>
-    {% endif %}
-</div>
 {% endblock %}

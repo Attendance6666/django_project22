@@ -26,15 +26,9 @@ def home(request):
 
 
 def group_detail(request, group_id):
-    """Detail page for a group with students and attendance"""
     group = get_object_or_404(Group, id=group_id)
-    students = group.students.all().prefetch_related('attendance_set')
-
-    context = {
-        'group': group,
-        'students': students,
-    }
-    return render(request, 'detail.html', context)
+    students = group.students.all()
+    return render(request, 'detail.html', {"group": group, "students": students})
 
 
 def students_list(request):
